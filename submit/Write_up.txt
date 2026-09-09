@@ -1,0 +1,22 @@
+Have you ever wondered what happens to memory once it is no longer needed? 
+In this list, that question is the whole assignment. Every Token carries a lexeme, a string living on the heap, and the rule is simple: 
+whoever holds the Token owns that lexeme and must free it exactly once.
+
+Take the ARROW token, “->”, from route primary -> node gateway ;. 
+token_make allocates it on the heap and hands back a Token holding that pointer. 
+Ownership first belongs to whoever is holding that Token in main.c. 
+Once it is passed into list_push_back, node->token = token copies the pointer into the new node, and from that instant the node owns the string, not the caller.
+
+It is released in list_destroy, which calls token_free(&current->token) before free(current). 
+That order matters: freeing the node first would lose the only pointer to the lexeme, leaking it forever. 
+list_remove_first follows the same order.
+
+If push_back's malloc failed and it did not free the token it was given, 
+that lexeme would become unreachable. No node was created to hold it, 
+and the caller's copy is gone the moment the Token was passed by value. 
+Nothing would ever free it again, which is exactly the “definitely lost” block Valgrind is built to catch. 
+This is why every insertion function calls token_free on its failure path before returning false.
+
+make valgrind confirmed the rule held: fifteen allocations, 
+fifteen frees, zero errors. Ownership moves forward through push and insert, 
+and out cleanly through destroy and remove.
