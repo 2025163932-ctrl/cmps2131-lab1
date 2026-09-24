@@ -1,0 +1,19 @@
+# A focused, beginner-friendly set of checks for Lab 1. Later labs tighten this
+# (e.g. re-enabling cert-err33-c, which asks you to check I/O return values).
+#  bugprone-*        likely real bugs
+#  cert-*            SEI CERT C secure-coding rules (a course reference)
+#  clang-analyzer-*  deeper path-sensitive analysis
+#  misc-*, performance-*  general hygiene
+# Some noisy checks are turned off with a leading '-'.
+Checks: >
+  bugprone-*,
+  cert-*,
+  clang-analyzer-*,
+  misc-*,
+  performance-*,
+  -bugprone-easily-swappable-parameters,
+  -misc-include-cleaner,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
+  -cert-err33-c
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*'

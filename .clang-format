@@ -1,0 +1,13 @@
+# Style for CMPS2131. Based on LLVM, tuned for readability while you learn C.
+BasedOnStyle: LLVM
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ColumnLimit: 100
+PointerAlignment: Right          # write `char *p`, not `char* p`
+AlignConsecutiveAssignments: true   # keep the aligned `.field = value` columns
+AlignConsecutiveDeclarations: false
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: false
+SpaceBeforeParens: ControlStatements
